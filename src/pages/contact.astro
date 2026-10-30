@@ -1,0 +1,765 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { siteConfig } from '../data/site';
+import Icon from '../components/Icon.astro';
+
+const breadcrumbs = [{ label: 'Contact & Inquiries' }];
+
+const budgetTiers = [
+  { id: 'cb1', label: '< $25k', desc: 'Fast-Track Sprint' },
+  { id: 'cb2', label: '$25k - $50k', desc: 'Core MVP / Rebrand' },
+  { id: 'cb3', label: '$50k - $100k', desc: 'Full Platform' },
+  { id: 'cb4', label: '$100k+', desc: 'Enterprise Suite' },
+];
+
+const serviceOptions = [
+  'Digital Product Design',
+  'Next-Gen Web Architecture',
+  'Brand & Motion Identity',
+  'Design Systems & Tokens',
+  '3D Spatial & WebGL',
+  'Technical SEO & Growth',
+];
+---
+
+<BaseLayout
+  title="Contact & New Project Inquiries — Apex Agency"
+  description="Initiate a project inquiry with Apex Agency. Tell us about your vision, timeline, and goals. We respond within 24 business hours."
+>
+  <div class="contact-page">
+    <div class="container page-header">
+      <Breadcrumbs items={breadcrumbs} />
+      <span class="section-tag">Let's Connect</span>
+      <h1 class="page-title">Initiate a Strategic Collaboration.</h1>
+      <p class="page-subtitle">
+        Whether you are planning a stealth-to-public product debut, rebuilding a high-traffic web platform, or inventing a new category, we are ready to partner with you.
+      </p>
+    </div>
+
+    <div class="container contact-layout-grid">
+      <!-- Left Column: Form -->
+      <div class="contact-form-column">
+        <div class="card card-glass form-card">
+          <!-- Demo Notice Banner -->
+          <div class="demo-banner">
+            <div class="demo-banner-header">
+              <Icon name="shield" size={17} class="shield-icon" />
+              <span class="demo-banner-title">Interactive Theme Demo Mode</span>
+            </div>
+            <p class="demo-banner-text">
+              This form performs active client-side field validation and simulated submission. To receive live customer inquiries in production, point the form action to your preferred backend (Formspree, Basin, Netlify, or custom API).
+            </p>
+          </div>
+
+          <!-- Form Element -->
+          <div id="page-form-wrapper">
+            <form id="contact-page-form" class="page-form" novalidate>
+              <!-- Budget Selection -->
+              <div class="form-section">
+                <label class="form-label">Estimated Investment</label>
+                <div class="budget-selection-grid">
+                  {budgetTiers.map((tier, idx) => (
+                    <label class={`budget-option-label ${idx === 1 ? 'selected' : ''}`}>
+                      <input
+                        type="radio"
+                        name="page_budget"
+                        value={tier.label}
+                        class="sr-only"
+                        checked={idx === 1}
+                      />
+                      <span class="opt-amount">{tier.label}</span>
+                      <span class="opt-desc">{tier.desc}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <!-- Services Selection -->
+              <div class="form-section">
+                <label class="form-label">Areas of Focus</label>
+                <div class="services-selection-grid">
+                  {serviceOptions.map((service, idx) => (
+                    <label class="service-pill-label">
+                      <input
+                        type="checkbox"
+                        name="page_services"
+                        value={service}
+                        class="service-chk"
+                        checked={idx < 2}
+                      />
+                      <span>{service}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <!-- User Inputs -->
+              <div class="form-grid-row">
+                <div class="form-field">
+                  <label for="contact-name" class="field-label">Your Full Name <span class="req">*</span></label>
+                  <input
+                    type="text"
+                    id="contact-name"
+                    name="name"
+                    class="form-input"
+                    placeholder="e.g. Marcus Vance"
+                    required
+                  />
+                  <span class="field-error" id="page-err-name"></span>
+                </div>
+
+                <div class="form-field">
+                  <label for="contact-email" class="field-label">Work Email <span class="req">*</span></label>
+                  <input
+                    type="email"
+                    id="contact-email"
+                    name="email"
+                    class="form-input"
+                    placeholder="marcus@company.com"
+                    required
+                  />
+                  <span class="field-error" id="page-err-email"></span>
+                </div>
+              </div>
+
+              <div class="form-grid-row">
+                <div class="form-field">
+                  <label for="contact-company" class="field-label">Company / Venture Name</label>
+                  <input
+                    type="text"
+                    id="contact-company"
+                    name="company"
+                    class="form-input"
+                    placeholder="e.g. Veloce Networks"
+                  />
+                </div>
+
+                <div class="form-field">
+                  <label for="contact-timeline" class="field-label">Launch Horizon</label>
+                  <select id="contact-timeline" name="timeline" class="form-select">
+                    <option value="Immediately (Next 2-4 Weeks)">Immediately (Next 2-4 Weeks)</option>
+                    <option value="Q2 Launch (1-3 Months)" selected>Q2 Launch (1-3 Months)</option>
+                    <option value="Longer Horizon (3-6 Months)">Longer Horizon (3-6 Months)</option>
+                    <option value="Continuous Advisory Retainer">Continuous Advisory Retainer</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="contact-message" class="field-label">Project Overview <span class="req">*</span></label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows="4"
+                  class="form-textarea"
+                  placeholder="Outline what you are building, the problem space, and the target launch outcomes..."
+                  required
+                ></textarea>
+                <span class="field-error" id="page-err-msg"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg btn-full" id="contact-submit-btn">
+                <span>Submit Collaboration Inquiry</span>
+                <Icon name="arrow-right" size={18} />
+              </button>
+            </form>
+          </div>
+
+          <!-- Success Screen -->
+          <div id="page-success-wrapper" class="success-screen" hidden>
+            <div class="success-icon-badge">
+              <Icon name="check" size={36} />
+            </div>
+            <h2 class="success-screen-title">Inquiry Successfully Recorded</h2>
+            <p class="success-screen-desc">
+              Thank you for reaching out to Apex Agency. A partner director will inspect your project parameters and respond with initial thoughts within 24 hours.
+            </p>
+
+            <div class="summary-details-card card">
+              <div class="sum-row">
+                <span class="sum-key">Contact:</span>
+                <span class="sum-val" id="page-sum-name"></span>
+              </div>
+              <div class="sum-row">
+                <span class="sum-key">Email:</span>
+                <span class="sum-val" id="page-sum-email"></span>
+              </div>
+              <div class="sum-row">
+                <span class="sum-key">Investment:</span>
+                <span class="sum-val" id="page-sum-budget"></span>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary btn-full" id="page-reset-btn">
+              <span>Submit Another Project Inquiry</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Sidebar Contacts & Locations -->
+      <aside class="contact-sidebar-column">
+        <!-- Direct Communication Card -->
+        <div class="card card-glass sidebar-card">
+          <h3 class="sidebar-card-title">Direct Communication</h3>
+          <ul class="direct-contact-list">
+            <li class="direct-item">
+              <div class="direct-icon"><Icon name="mail" size={16} /></div>
+              <div>
+                <span class="direct-lbl">New Business:</span>
+                <a href={`mailto:${siteConfig.contactEmail}`} class="direct-link">{siteConfig.contactEmail}</a>
+              </div>
+            </li>
+            <li class="direct-item">
+              <div class="direct-icon"><Icon name="phone" size={16} /></div>
+              <div>
+                <span class="direct-lbl">Global Studio Line:</span>
+                <a href={`tel:${siteConfig.contactPhone}`} class="direct-link">{siteConfig.contactPhone}</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Global Locations Card -->
+        <div class="card card-glass sidebar-card">
+          <h3 class="sidebar-card-title">Studio Hubs</h3>
+          <div class="studio-locations-stack">
+            {siteConfig.offices.map((office) => (
+              <div class="hub-item">
+                <div class="hub-header">
+                  <span class="hub-city">{office.city}</span>
+                  <span class="badge badge-brand">{office.timezone}</span>
+                </div>
+                <p class="hub-address">{office.address}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Working With Apex Card -->
+        <div class="card card-glass sidebar-card note-card">
+          <h4 class="note-title">What happens next?</h4>
+          <ol class="next-steps-list">
+            <li><strong>Initial Review:</strong> Our partners review your brief within 24 business hours.</li>
+            <li><strong>Discovery Call:</strong> A 30-minute technical consultation to align scope and feasibility.</li>
+            <li><strong>Proposal & Roadmap:</strong> A fixed-scope proposal with exact milestones and timelines.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    const form = document.getElementById('contact-page-form');
+    const formWrapper = document.getElementById('page-form-wrapper');
+    const successWrapper = document.getElementById('page-success-wrapper');
+    const resetBtn = document.getElementById('page-reset-btn');
+
+    // Budget Radio Styling
+    const budgetLabels = document.querySelectorAll('.budget-option-label');
+    budgetLabels.forEach((label) => {
+      label.addEventListener('click', () => {
+        budgetLabels.forEach((l) => l.classList.remove('selected'));
+        label.classList.add('selected');
+      });
+    });
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
+
+        const nameInput = document.getElementById('contact-name');
+        const emailInput = document.getElementById('contact-email');
+        const msgInput = document.getElementById('contact-message');
+
+        const errName = document.getElementById('page-err-name');
+        const errEmail = document.getElementById('page-err-email');
+        const errMsg = document.getElementById('page-err-msg');
+
+        [errName, errEmail, errMsg].forEach((el) => {
+          if (el) el.textContent = '';
+        });
+
+        if (!nameInput.value.trim()) {
+          errName.textContent = 'Please enter your name.';
+          isValid = false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+          errEmail.textContent = 'Please enter a valid work email address.';
+          isValid = false;
+        }
+
+        if (!msgInput.value.trim() || msgInput.value.trim().length < 10) {
+          errMsg.textContent = 'Please describe your project (minimum 10 characters).';
+          isValid = false;
+        }
+
+        if (isValid) {
+          const selectedBudget = form.querySelector('input[name="page_budget"]:checked')?.value || '$25k - $50k';
+
+          document.getElementById('page-sum-name').textContent = nameInput.value.trim();
+          document.getElementById('page-sum-email').textContent = emailInput.value.trim();
+          document.getElementById('page-sum-budget').textContent = selectedBudget;
+
+          formWrapper.hidden = true;
+          successWrapper.hidden = false;
+          window.scrollTo({ top: formWrapper.offsetTop - 100, behavior: 'smooth' });
+        }
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        formWrapper.hidden = false;
+        successWrapper.hidden = true;
+      });
+    }
+  })();
+</script>
+
+<style>
+  .contact-page {
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 3.5rem auto;
+  }
+
+  .page-title {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .page-subtitle {
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* Contact Layout Grid */
+  .contact-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .contact-layout-grid {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+
+  .form-card {
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-xl);
+  }
+
+  @media (min-width: 640px) {
+    .form-card {
+      padding: 3rem 2.75rem;
+    }
+  }
+
+  /* Demo Banner */
+  .demo-banner {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.22);
+    margin-bottom: 2rem;
+  }
+
+  .demo-banner-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .shield-icon {
+    color: var(--brand-primary);
+  }
+
+  .demo-banner-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+  }
+
+  .demo-banner-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  /* Form Elements */
+  .page-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .form-label,
+  .field-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .req {
+    color: var(--color-danger);
+  }
+
+  .budget-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  @media (min-width: 540px) {
+    .budget-selection-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .budget-option-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: center;
+  }
+
+  .budget-option-label:hover {
+    border-color: var(--border-hover);
+  }
+
+  .budget-option-label.selected {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 1px var(--brand-primary);
+  }
+
+  .opt-amount {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .opt-desc {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  /* Services Grid */
+  .services-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 540px) {
+    .services-selection-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .service-pill-label {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .service-pill-label:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+  }
+
+  .service-chk {
+    accent-color: var(--brand-primary);
+    width: 16px;
+    height: 16px;
+  }
+
+  .form-grid-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 580px) {
+    .form-grid-row {
+      flex-direction: row;
+    }
+    .form-field {
+      flex: 1;
+    }
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+  }
+
+  .form-input:focus,
+  .form-select:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+
+  .field-error {
+    font-size: 0.8rem;
+    color: var(--color-danger);
+    font-weight: 500;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  /* Success Screen */
+  .success-screen {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .success-icon-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-full);
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-screen-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+
+  .success-screen-desc {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.6;
+  }
+
+  .summary-details-card {
+    width: 100%;
+    max-width: 440px;
+    background: var(--bg-surface-elevated);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    text-align: left;
+  }
+
+  .sum-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .sum-key {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .sum-val {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  /* Sidebar */
+  .contact-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-card {
+    padding: 2rem;
+    border-radius: var(--radius-xl);
+  }
+
+  .sidebar-card-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .direct-contact-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .direct-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .direct-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--brand-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .direct-lbl {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+    display: block;
+  }
+
+  .direct-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .direct-link:hover {
+    color: var(--brand-primary);
+  }
+
+  /* Studio Hubs */
+  .studio-locations-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .hub-item {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hub-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .hub-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+
+  .hub-city {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .hub-address {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  /* Note Card */
+  .note-card {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: rgba(99, 102, 241, 0.2);
+  }
+
+  .note-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .next-steps-list {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>

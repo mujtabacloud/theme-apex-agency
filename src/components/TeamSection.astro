@@ -1,0 +1,41 @@
+---
+import { teamMembers } from '../data/team';
+import TeamCard from './TeamCard.astro';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const displayMembers = limit ? teamMembers.slice(0, limit) : teamMembers;
+---
+
+<section class="team-section" id="team">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Leadership & Craft</span>
+      <h2 class="section-title">The architects behind benchmark products.</h2>
+      <p class="section-subtitle">
+        Our partners and discipline directors lead every project directly. No handoffs to junior contractors; only seasoned practitioners with decades of combined execution.
+      </p>
+    </div>
+
+    <div class="grid grid-3 team-grid">
+      {displayMembers.map((member) => (
+        <TeamCard member={member} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .team-section {
+    padding: 6.5rem 0;
+    position: relative;
+    background: var(--bg-surface-subtle);
+  }
+
+  .team-grid {
+    gap: 2rem;
+  }
+</style>

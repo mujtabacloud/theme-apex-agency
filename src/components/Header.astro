@@ -1,0 +1,431 @@
+---
+import { siteConfig, getRelativePath } from '../data/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
+const homePath = getRelativePath('/');
+
+const isActive = (href: string) => {
+  if (href === homePath || href === '/') {
+    return currentPath === homePath || currentPath === '/' || currentPath === `${homePath}/`;
+  }
+  return currentPath.startsWith(href);
+};
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-container">
+    <!-- Brand Logo -->
+    <a href={homePath} class="brand-link" aria-label="Apex Agency Home">
+      <div class="brand-icon">
+        <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#0B0F19" />
+          <path d="M16 6L25 24H7L16 6Z" stroke="url(#hdr-apex-grad)" stroke-width="2.6" stroke-linejoin="round" />
+          <circle cx="16" cy="18" r="3.2" fill="url(#hdr-apex-grad)" />
+          <defs>
+            <linearGradient id="hdr-apex-grad" x1="7" y1="6" x2="25" y2="24" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#6366F1" />
+              <stop offset="0.5" stop-color="#A855F7" />
+              <stop offset="1" stop-color="#06B6D4" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="brand-text-wrap">
+        <span class="brand-name">APEX</span>
+        <span class="brand-tag">AGENCY</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav" aria-label="Main Navigation">
+      <ul class="nav-list">
+        {siteConfig.navItems.map((item) => (
+          <li class="nav-item">
+            <a
+              href={item.href}
+              class={`nav-link ${isActive(item.href) ? 'active' : ''}`}
+            >
+              <span>{item.title}</span>
+              {item.badge && <span class="nav-badge">{item.badge}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <!-- Dark/Light Theme Switcher -->
+      <button
+        id="theme-toggle-btn"
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle color scheme"
+        title="Toggle color scheme"
+      >
+        <span class="theme-icon light-icon">
+          <Icon name="sun" size={19} />
+        </span>
+        <span class="theme-icon dark-icon">
+          <Icon name="moon" size={19} />
+        </span>
+      </button>
+
+      <!-- Primary CTA Button -->
+      <button
+        type="button"
+        class="btn btn-primary btn-sm hide-mobile open-contact-modal-btn"
+        data-contact-trigger
+      >
+        <span>Start a Project</span>
+        <Icon name="arrow-up-right" size={15} />
+      </button>
+
+      <!-- Mobile Menu Hamburger -->
+      <button
+        id="mobile-menu-toggle"
+        class="mobile-toggle hide-desktop"
+        type="button"
+        aria-label="Toggle mobile navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu-drawer"
+      >
+        <span class="icon-open">
+          <Icon name="menu" size={22} />
+        </span>
+        <span class="icon-close">
+          <Icon name="close" size={22} />
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu-drawer" class="mobile-drawer" hidden>
+    <div class="mobile-drawer-inner">
+      <nav class="mobile-nav" aria-label="Mobile Navigation">
+        <ul class="mobile-nav-list">
+          {siteConfig.navItems.map((item) => (
+            <li class="mobile-nav-item">
+              <a
+                href={item.href}
+                class={`mobile-nav-link ${isActive(item.href) ? 'active' : ''}`}
+              >
+                <span>{item.title}</span>
+                {item.badge && <span class="nav-badge">{item.badge}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="mobile-drawer-footer">
+        <button
+          type="button"
+          class="btn btn-primary btn-full open-contact-modal-btn"
+          data-contact-trigger
+        >
+          <span>Start a Project</span>
+          <Icon name="arrow-up-right" size={16} />
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (function () {
+    // Mobile Drawer Logic
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+    const drawer = document.getElementById('mobile-menu-drawer');
+
+    if (toggleBtn && drawer) {
+      toggleBtn.addEventListener('click', () => {
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+        if (isExpanded) {
+          drawer.classList.remove('open');
+          setTimeout(() => {
+            drawer.hidden = true;
+          }, 200);
+        } else {
+          drawer.hidden = false;
+          requestAnimationFrame(() => {
+            drawer.classList.add('open');
+          });
+        }
+      });
+
+      // Close drawer when any link is clicked
+      drawer.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          toggleBtn.setAttribute('aria-expanded', 'false');
+          drawer.classList.remove('open');
+          setTimeout(() => {
+            drawer.hidden = true;
+          }, 200);
+        });
+      });
+    }
+
+    // Theme Switcher Logic
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('apex-theme', newTheme);
+      });
+    }
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--header-height);
+    background-color: var(--header-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--header-border);
+    display: flex;
+    align-items: center;
+    transition: background-color var(--transition-normal), border-color var(--transition-normal);
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 100%;
+  }
+
+  /* Brand Link */
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-primary);
+  }
+
+  .brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-fast);
+  }
+
+  .brand-link:hover .brand-icon {
+    transform: rotate(8deg) scale(1.06);
+  }
+
+  .brand-text-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+
+  .brand-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+  }
+
+  .brand-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--brand-primary);
+  }
+
+  /* Desktop Nav */
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 769px) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.55rem 0.95rem;
+    border-radius: var(--radius-md);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--nav-link-color);
+    transition: all var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--nav-link-hover-color);
+    background-color: var(--nav-link-hover-bg);
+  }
+
+  .nav-link.active {
+    color: var(--nav-link-active-color);
+    background-color: var(--nav-link-active-bg);
+    font-weight: 600;
+  }
+
+  .nav-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--brand-primary);
+  }
+
+  /* Header Actions */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nav-link-color);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface);
+    transition: all var(--transition-fast);
+  }
+
+  .theme-toggle:hover {
+    color: var(--nav-link-hover-color);
+    border-color: var(--border-hover);
+    background: var(--bg-surface-elevated);
+  }
+
+  .theme-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .theme-icon.dark-icon {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .theme-icon.light-icon {
+    display: none;
+  }
+
+  :global([data-theme="dark"]) .theme-icon.dark-icon {
+    display: flex;
+  }
+
+  .mobile-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-surface);
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-toggle[aria-expanded="false"] .icon-close {
+    display: none;
+  }
+
+  .mobile-toggle[aria-expanded="true"] .icon-open {
+    display: none;
+  }
+
+  /* Mobile Drawer */
+  .mobile-drawer {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(5, 8, 16, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms ease, visibility 200ms ease;
+  }
+
+  .mobile-drawer.open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-drawer-inner {
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-8px);
+    transition: transform 200ms ease;
+  }
+
+  .mobile-drawer.open .mobile-drawer-inner {
+    transform: translateY(0);
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--nav-link-color);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    background: var(--nav-link-hover-bg);
+    color: var(--nav-link-hover-color);
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+</style>

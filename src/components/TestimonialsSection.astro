@@ -1,0 +1,126 @@
+---
+import { testimonials } from '../data/testimonials';
+import Icon from './Icon.astro';
+---
+
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Executive Endorsements</span>
+      <h2 class="section-title">Trusted by industry pioneers.</h2>
+      <p class="section-subtitle">
+        Read how our partners experience the velocity, rigor, and craft that Apex brings to every engagement.
+      </p>
+    </div>
+
+    <div class="grid grid-2 testimonials-grid">
+      {testimonials.map((t) => (
+        <article class="testimonial-card card card-glass">
+          <div class="testimonial-top">
+            <!-- 5-Star Rating -->
+            <div class="stars-row" aria-label="5 out of 5 stars">
+              {Array.from({ length: t.stars }).map(() => (
+                <Icon name="star" size={15} class="star-icon" />
+              ))}
+            </div>
+            <!-- Metric Pill -->
+            <span class="badge badge-brand test-metric">{t.metric}</span>
+          </div>
+
+          <p class="testimonial-quote">“{t.quote}”</p>
+
+          <footer class="testimonial-footer">
+            <div class="author-avatar">{t.author.split(' ').map(n => n[0]).join('')}</div>
+            <div class="author-info">
+              <h4 class="author-name">{t.author}</h4>
+              <p class="author-role">{t.role}, <span class="author-company">{t.company}</span></p>
+            </div>
+          </footer>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: 6.5rem 0;
+    position: relative;
+  }
+
+  .testimonials-grid {
+    gap: 2rem;
+  }
+
+  .testimonial-card {
+    padding: 2.5rem 2.25rem;
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .testimonial-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .stars-row {
+    display: flex;
+    gap: 4px;
+    color: var(--color-warning);
+  }
+
+  .test-metric {
+    font-weight: 700;
+  }
+
+  .testimonial-quote {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .testimonial-footer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--brand-gradient);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .author-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+  }
+
+  .author-role {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .author-company {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+</style>

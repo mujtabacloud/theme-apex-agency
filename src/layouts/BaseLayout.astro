@@ -1,0 +1,79 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ContactModal from '../components/ContactModal.astro';
+import TeamModal from '../components/TeamModal.astro';
+import { siteConfig, getRelativePath } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = `${siteConfig.name} — ${siteConfig.tagline}`,
+  description = siteConfig.description,
+  ogImage = getRelativePath('/favicon.svg'),
+} = Astro.props;
+
+const pageTitle = title.includes(siteConfig.name) ? title : `${title} | ${siteConfig.name}`;
+const currentPath = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href={getRelativePath('/favicon.svg')} />
+
+    <!-- SEO & Metadata -->
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Apex Agency Studio" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Zero-Flash Theme Script -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('apex-theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored || (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <Header currentPath={currentPath} />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Interactive Global Modals -->
+    <ContactModal />
+    <TeamModal />
+  </body>
+</html>

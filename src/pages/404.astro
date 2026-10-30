@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getRelativePath } from '../data/site';
+---
+
+<BaseLayout 
+  title="Page Not Found | Apex Agency"
+  description="The page you were looking for could not be found or has moved. Return to the Apex Agency studio homepage."
+>
+  <main class="error-page section-container">
+    <div class="error-content">
+      <div class="badge error-badge">
+        <span class="badge-dot" style="background-color: var(--color-accent-amber);"></span>
+        <span>Error 404</span>
+      </div>
+
+      <h1 class="error-code">404</h1>
+      
+      <h2 class="error-title">Page out of orbit</h2>
+      
+      <p class="error-description">
+        The digital space you are looking for has been moved, renamed, or does not exist in our current coordinates. Let's get you back on course.
+      </p>
+
+      <div class="error-actions">
+        <a href={getRelativePath('/')} class="btn btn-primary btn-lg">
+          <Icon name="arrow-right" class="rotate-180" size={18} />
+          <span>Return Home</span>
+        </a>
+        <a href={getRelativePath('/projects/')} class="btn btn-secondary btn-lg">
+          <span>Explore Case Studies</span>
+          <Icon name="arrow-right" size={18} />
+        </a>
+      </div>
+
+      <div class="quick-links-card card">
+        <h3 class="quick-links-title">Popular Destinations</h3>
+        <ul class="quick-links-list">
+          <li>
+            <a href={getRelativePath('/services/')} class="quick-link">
+              <span class="link-label">Agency Services</span>
+              <span class="link-desc">Explore our design systems, brand identities, and full-stack engineering</span>
+              <Icon name="arrow-right" size={14} class="link-icon" />
+            </a>
+          </li>
+          <li>
+            <a href={getRelativePath('/about/')} class="quick-link">
+              <span class="link-label">About the Studio</span>
+              <span class="link-desc">Learn about our team, core principles, leadership, and craft</span>
+              <Icon name="arrow-right" size={14} class="link-icon" />
+            </a>
+          </li>
+          <li>
+            <a href={getRelativePath('/contact/')} class="quick-link">
+              <span class="link-label">Initiate a Project</span>
+              <span class="link-desc">Request a proposal, scope a roadmap, or schedule an executive discovery call</span>
+              <Icon name="arrow-right" size={14} class="link-icon" />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .error-page {
+    padding-top: calc(var(--header-height) + var(--space-20));
+    padding-bottom: var(--space-24);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+  }
+
+  .error-content {
+    max-width: 680px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .error-badge {
+    margin-bottom: var(--space-6);
+  }
+
+  .error-code {
+    font-size: clamp(5rem, 15vw, 9rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, var(--color-primary-400), var(--color-accent-purple), var(--color-accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: var(--space-4);
+  }
+
+  .error-title {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+    font-weight: 800;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-4);
+    letter-spacing: -0.02em;
+  }
+
+  .error-description {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-8);
+    max-width: 520px;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-12);
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+
+  .quick-links-card {
+    width: 100%;
+    text-align: left;
+    padding: var(--space-6);
+    background: var(--color-surface-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+  }
+
+  .quick-links-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+  }
+
+  .quick-links-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .quick-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    border: 1px solid transparent;
+  }
+
+  .quick-link:hover {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-subtle);
+  }
+
+  .link-label {
+    grid-column: 1;
+    grid-row: 1;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+  }
+
+  .link-desc {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+
+  .link-icon {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    color: var(--color-text-muted);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .quick-link:hover .link-icon {
+    transform: translateX(4px);
+    color: var(--color-primary-400);
+  }
+
+  @media (max-width: 640px) {
+    .error-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    .error-actions .btn {
+      width: 100%;
+    }
+  }
+</style>

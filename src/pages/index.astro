@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import StatsSection from '../components/StatsSection.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import ProjectsShowcase from '../components/ProjectsShowcase.astro';
+import TeamSection from '../components/TeamSection.astro';
+import TestimonialsSection from '../components/TestimonialsSection.astro';
+import { getRelativePath } from '../data/site';
+import Icon from '../components/Icon.astro';
+---
+
+<BaseLayout
+  title="Apex Agency — Strategic Digital Product & Creative Studio"
+  description="Apex Agency engineers benchmark-setting digital products, next-gen web platforms, and iconic brand systems for venture-backed disruptors."
+>
+  <!-- 1. Hero Section with Interactive Preview Reel -->
+  <Hero />
+
+  <!-- 2. Client Logos Infinite Marquee -->
+  <Marquee />
+
+  <!-- 3. Measurable Agency Statistics & Metrics -->
+  <StatsSection />
+
+  <!-- 4. Interactive Services Capabilities Grid -->
+  <ServicesGrid />
+
+  <!-- 5. Filterable Case Studies Gallery with Outcomes -->
+  <ProjectsShowcase />
+
+  <!-- 6. Interdisciplinary Team & Leadership Profiles -->
+  <TeamSection limit={3} />
+
+  <!-- 7. Executive Client Testimonials -->
+  <TestimonialsSection />
+
+  <!-- Additional Agency Philosophy / Process Banner -->
+  <section class="process-teaser-section">
+    <div class="container">
+      <div class="process-card card card-glass">
+        <div class="process-content">
+          <span class="section-tag">How We Work</span>
+          <h2 class="process-title">Zero handoffs. Deep partnership. Uncompromising velocity.</h2>
+          <p class="process-desc">
+            We don't operate like bloated traditional agencies with account managers in between. You work directly with veteran product directors and lead engineers who care about your balance sheet as much as you do.
+          </p>
+          <div class="process-steps-row">
+            <div class="step-item">
+              <span class="step-num">01</span>
+              <span class="step-text">Strategic Discovery</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item">
+              <span class="step-num">02</span>
+              <span class="step-text">Spatial Architecture</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item">
+              <span class="step-num">03</span>
+              <span class="step-text">Zero-Bloat Engineering</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step-item">
+              <span class="step-num">04</span>
+              <span class="step-text">Continuous Optimization</span>
+            </div>
+          </div>
+        </div>
+        <div class="process-cta-box">
+          <a href={getRelativePath('/about/')} class="btn btn-secondary btn-lg">
+            <span>Learn About Our Culture</span>
+            <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .process-teaser-section {
+    padding: 3rem 0 6rem 0;
+  }
+
+  .process-card {
+    padding: 3.5rem 3rem;
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 960px) {
+    .process-card {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .process-content {
+    max-width: 680px;
+  }
+
+  .process-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .process-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  .process-steps-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 800;
+    color: var(--brand-primary);
+    background: rgba(99, 102, 241, 0.12);
+    padding: 2px 7px;
+    border-radius: var(--radius-xs);
+  }
+
+  .step-connector {
+    width: 20px;
+    height: 1px;
+    background: var(--border-strong);
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .step-connector {
+      display: block;
+    }
+  }
+
+  .process-cta-box {
+    flex-shrink: 0;
+  }
+</style>

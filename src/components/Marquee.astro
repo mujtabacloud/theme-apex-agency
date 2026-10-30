@@ -1,0 +1,91 @@
+---
+import { clientLogos } from '../data/stats';
+---
+
+<section class="marquee-section">
+  <div class="container marquee-header">
+    <p class="marquee-caption">Trusted by high-velocity startups and global enterprises</p>
+  </div>
+
+  <div class="marquee-track-container" aria-hidden="true">
+    <div class="marquee-track animate-marquee">
+      <!-- First set -->
+      {clientLogos.map((client) => (
+        <div class="client-logo-item">
+          <span class="client-symbol">{client.symbol}</span>
+          <span class="client-tag">{client.tag}</span>
+        </div>
+      ))}
+      <!-- Duplicate set for seamless looping -->
+      {clientLogos.map((client) => (
+        <div class="client-logo-item">
+          <span class="client-symbol">{client.symbol}</span>
+          <span class="client-tag">{client.tag}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    overflow: hidden;
+  }
+
+  .marquee-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .marquee-caption {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-subtle);
+  }
+
+  .marquee-track-container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  }
+
+  .client-logo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 3rem;
+    gap: 0.25rem;
+    opacity: 0.65;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .client-logo-item:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+
+  .client-symbol {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+  }
+
+  .client-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+</style>

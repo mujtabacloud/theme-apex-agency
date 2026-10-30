@@ -1,0 +1,419 @@
+---
+import { siteConfig, getRelativePath } from '../data/site';
+import Icon from './Icon.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <!-- Top Teaser Banner -->
+  <div class="footer-cta-banner">
+    <div class="container">
+      <div class="cta-banner-card card-glass">
+        <div class="cta-banner-content">
+          <span class="section-tag">Start Your Next Chapter</span>
+          <h2 class="cta-banner-title">Have a transformative project in mind?</h2>
+          <p class="cta-banner-desc">
+            We partner with visionary founders and global leaders to build category-defining software and brands.
+          </p>
+        </div>
+        <div class="cta-banner-actions">
+          <button type="button" class="btn btn-primary btn-lg btn-glow open-contact-modal-btn" data-contact-trigger>
+            <span>Let's Build Together</span>
+            <Icon name="arrow-up-right" size={18} />
+          </button>
+          <a href={getRelativePath('/contact/')} class="btn btn-secondary btn-lg">
+            <span>Inquiry Details</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Footer Content -->
+  <div class="container footer-main">
+    <div class="footer-grid">
+      <!-- Col 1: Brand & Bio -->
+      <div class="footer-col brand-col">
+        <a href={getRelativePath('/')} class="footer-brand" aria-label="Apex Agency Home">
+          <div class="footer-brand-icon">
+            <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="8" fill="#0B0F19" />
+              <path d="M16 6L25 24H7L16 6Z" stroke="url(#ftr-apex-grad)" stroke-width="2.6" stroke-linejoin="round" />
+              <circle cx="16" cy="18" r="3.2" fill="url(#ftr-apex-grad)" />
+              <defs>
+                <linearGradient id="ftr-apex-grad" x1="7" y1="6" x2="25" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#6366F1" />
+                  <stop offset="0.5" stop-color="#A855F7" />
+                  <stop offset="1" stop-color="#06B6D4" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <span class="footer-brand-name">APEX</span>
+          <span class="footer-brand-badge">AGENCY</span>
+        </a>
+
+        <p class="footer-bio">
+          Apex Agency is a bespoke digital product studio engineering high-impact web architectures, spatial canvases, and iconic brand systems.
+        </p>
+
+        <!-- Global Studios -->
+        <div class="footer-offices">
+          <h4 class="offices-label">Global Studios</h4>
+          <ul class="offices-list">
+            {siteConfig.offices.map((office) => (
+              <li class="office-item">
+                <span class="office-city">{office.city}</span>
+                <span class="office-tz">{office.timezone}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Cols 2, 3, 4: Footer Section Links -->
+      {siteConfig.footerSections.map((section) => (
+        <div class="footer-col links-col">
+          <h4 class="footer-col-title">{section.title}</h4>
+          <ul class="footer-links-list">
+            {section.links.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  target={link.isExternal ? '_blank' : undefined}
+                  rel={link.isExternal ? 'noopener noreferrer' : undefined}
+                  class="footer-nav-link"
+                >
+                  <span>{link.label}</span>
+                  {link.isExternal && <Icon name="external-link" size={12} class="ext-icon" />}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        <p class="copyright-text">
+          &copy; {currentYear} {siteConfig.name}. Released under the <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" class="footer-inline-link">MIT License</a>.
+        </p>
+        <span class="thempok-badge">
+          First Official Theme on <a href="https://github.com/mujtabacloud/thempok" target="_blank" rel="noopener noreferrer" class="thempok-link">Thempok</a>
+        </span>
+      </div>
+
+      <!-- Socials -->
+      <div class="footer-socials">
+        {siteConfig.socials.map((social) => (
+          <a
+            href={social.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn"
+            aria-label={social.platform}
+            title={social.platform}
+          >
+            <Icon name={social.icon as any} size={16} />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border-subtle);
+    padding-top: 4rem;
+    padding-bottom: 2.5rem;
+    margin-top: auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 1px;
+    background: var(--brand-gradient);
+    opacity: 0.5;
+  }
+
+  /* Teaser Banner */
+  .footer-cta-banner {
+    margin-bottom: 4.5rem;
+  }
+
+  .cta-banner-card {
+    border-radius: var(--radius-xl);
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .cta-banner-card {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .cta-banner-card::after {
+    content: '';
+    position: absolute;
+    right: -10%;
+    top: -50%;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: var(--brand-gradient-glow);
+    filter: blur(80px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .cta-banner-content {
+    max-width: 580px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-banner-title {
+    font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 0.85rem;
+    color: var(--text-primary);
+  }
+
+  .cta-banner-desc {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .cta-banner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Main Footer Grid */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .footer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+  }
+
+  /* Brand Col */
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-brand-name {
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+  }
+
+  .footer-brand-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--brand-primary);
+  }
+
+  .footer-bio {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 380px;
+    margin-bottom: 1.75rem;
+  }
+
+  .offices-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-subtle);
+    margin-bottom: 0.75rem;
+  }
+
+  .offices-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .office-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+  }
+
+  .office-city {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .office-tz {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 1px 6px;
+    border-radius: var(--radius-xs);
+    background: var(--bg-surface-elevated);
+  }
+
+  /* Links Col */
+  .footer-col-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .footer-links-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-nav-link {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-nav-link:hover {
+    color: var(--brand-primary);
+  }
+
+  .ext-icon {
+    opacity: 0.6;
+  }
+
+  /* Bottom Bar */
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-bottom {
+      flex-direction: row;
+    }
+  }
+
+  .footer-bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 640px) {
+    .footer-bottom-left {
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  .footer-inline-link {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer-inline-link:hover {
+    color: var(--brand-primary);
+  }
+
+  .thempok-badge {
+    font-size: 0.8rem;
+    color: var(--text-subtle);
+  }
+
+  .thempok-link {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
+  .thempok-link:hover {
+    text-decoration: underline;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .social-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .social-btn:hover {
+    color: var(--brand-primary);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+</style>

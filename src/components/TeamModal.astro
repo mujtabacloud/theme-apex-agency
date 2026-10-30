@@ -1,0 +1,290 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div id="team-modal" class="modal-overlay" aria-hidden="true" role="dialog" aria-labelledby="team-modal-name">
+  <div class="modal-window team-modal-window">
+    <button type="button" class="modal-close-btn" id="close-team-modal" aria-label="Close team member dialog">
+      <Icon name="close" size={18} />
+    </button>
+
+    <div class="team-modal-content">
+      <div class="team-modal-header">
+        <div class="team-modal-avatar-wrap">
+          <div class="team-modal-avatar" id="team-modal-avatar">VK</div>
+        </div>
+        <div class="team-modal-title-block">
+          <span class="badge badge-brand" id="team-modal-dept">Design Leadership</span>
+          <h2 id="team-modal-name" class="team-modal-name">Viktor Keller</h2>
+          <p id="team-modal-role" class="team-modal-role">Founder & Executive Creative Director</p>
+        </div>
+      </div>
+
+      <div class="team-modal-body">
+        <div class="modal-section">
+          <h4 class="modal-section-title">Biography</h4>
+          <p id="team-modal-bio" class="team-modal-bio-text"></p>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-section-title">Core Specializations</h4>
+          <div id="team-modal-specs" class="specs-tags-wrap"></div>
+        </div>
+
+        <div class="modal-section">
+          <h4 class="modal-section-title">Honors & Accolades</h4>
+          <ul id="team-modal-accolades" class="accolades-list"></ul>
+        </div>
+
+        <div class="modal-section quote-section">
+          <blockquote id="team-modal-quote" class="team-modal-quote"></blockquote>
+        </div>
+
+        <div class="modal-footer-socials">
+          <span class="connect-label">Connect:</span>
+          <div class="socials-row" id="team-modal-socials">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+              <Icon name="linkedin" size={16} />
+            </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Twitter">
+              <Icon name="twitter" size={16} />
+            </a>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
+              <Icon name="github" size={16} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    const modal = document.getElementById('team-modal');
+    const closeBtn = document.getElementById('close-team-modal');
+
+    function openTeamModal(data) {
+      if (!modal) return;
+      document.getElementById('team-modal-name').textContent = data.name || '';
+      document.getElementById('team-modal-role').textContent = data.role || '';
+      document.getElementById('team-modal-dept').textContent = data.department || '';
+      document.getElementById('team-modal-avatar').textContent = data.avatar || '';
+      document.getElementById('team-modal-bio').textContent = data.bio || '';
+      document.getElementById('team-modal-quote').textContent = data.quote ? `“${data.quote}”` : '';
+
+      // Set avatar background if present
+      const avatarEl = document.getElementById('team-modal-avatar');
+      if (avatarEl && data.themeColor) {
+        avatarEl.style.backgroundColor = data.themeColor;
+      }
+
+      // Populate specializations
+      const specsWrap = document.getElementById('team-modal-specs');
+      if (specsWrap) {
+        specsWrap.innerHTML = '';
+        const specs = (data.specializations || '').split(',').map((s) => s.trim()).filter(Boolean);
+        specs.forEach((s) => {
+          const pill = document.createElement('span');
+          pill.className = 'spec-pill';
+          pill.textContent = s;
+          specsWrap.appendChild(pill);
+        });
+      }
+
+      // Populate accolades
+      const accoladesList = document.getElementById('team-modal-accolades');
+      if (accoladesList) {
+        accoladesList.innerHTML = '';
+        const accolades = (data.accolades || '').split(',').map((a) => a.trim()).filter(Boolean);
+        accolades.forEach((a) => {
+          const li = document.createElement('li');
+          li.className = 'accolade-item';
+          li.innerHTML = `<span class="bullet">★</span><span>${a}</span>`;
+          accoladesList.appendChild(li);
+        });
+      }
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTeamModal() {
+      if (!modal) return;
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    // Attach to any element with [data-team-trigger]
+    document.querySelectorAll('[data-team-trigger]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const data = {
+          name: el.getAttribute('data-name'),
+          role: el.getAttribute('data-role'),
+          department: el.getAttribute('data-department'),
+          avatar: el.getAttribute('data-avatar'),
+          bio: el.getAttribute('data-bio'),
+          specializations: el.getAttribute('data-specs'),
+          accolades: el.getAttribute('data-accolades'),
+          quote: el.getAttribute('data-quote'),
+          themeColor: el.getAttribute('data-color'),
+        };
+        openTeamModal(data);
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeTeamModal);
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeTeamModal();
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
+        closeTeamModal();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .team-modal-window {
+    max-width: 600px;
+    padding: 2.25rem;
+  }
+
+  .team-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 1.5rem;
+  }
+
+  .team-modal-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-xl);
+    background: var(--brand-primary);
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+  }
+
+  .team-modal-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .team-modal-name {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .team-modal-role {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+  }
+
+  .team-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .modal-section-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-primary);
+    margin-bottom: 0.45rem;
+  }
+
+  .team-modal-bio-text {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* Specializations */
+  .specs-tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  :global(.spec-pill) {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+  }
+
+  /* Accolades */
+  .accolades-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  :global(.accolade-item) {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+
+  :global(.accolade-item .bullet) {
+    color: var(--brand-accent);
+    font-size: 0.8rem;
+  }
+
+  /* Quote */
+  .team-modal-quote {
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    border-left: 3px solid var(--brand-primary);
+    padding-left: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  .modal-footer-socials {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .connect-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .socials-row {
+    display: flex;
+    gap: 0.5rem;
+  }
+</style>

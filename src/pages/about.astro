@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TeamSection from '../components/TeamSection.astro';
+import StatsSection from '../components/StatsSection.astro';
+import { siteConfig } from '../data/site';
+import Icon from '../components/Icon.astro';
+
+const breadcrumbs = [{ label: 'About Agency' }];
+
+const pillars = [
+  {
+    icon: 'zap',
+    title: 'Performance is Respect',
+    desc: 'Bloated scripts and laggy viewports waste human attention. We architect zero-bloat static islands in Astro that load in under 400ms globally.',
+  },
+  {
+    icon: 'layout',
+    title: 'Systems Over Fragments',
+    desc: 'A button is not just a button; it is an element of an interconnected mathematical token system that ensures consistent evolution over a decade.',
+  },
+  {
+    icon: 'sparkle',
+    title: 'Bespoke Visual Stature',
+    desc: 'Generic corporate aesthetics breed indifference. We craft kinetic typography, generative 3D meshes, and bold color identities that command market attention.',
+  },
+  {
+    icon: 'users',
+    title: 'Direct Senior Craft',
+    desc: 'No account managers or junior pass-throughs. Our founding partners and discipline leads design, code, and strategize alongside you every week.',
+  },
+];
+
+const awards = [
+  { year: '2026', title: 'Studio of the Year Nominee', organization: 'Awwwards' },
+  { year: '2026', title: 'Best Technical Architecture (Astro Island)', organization: 'Webby Awards' },
+  { year: '2025', title: 'Gold Innovation in Digital Product', organization: 'Cannes Lions' },
+  { year: '2025', title: 'Design Systems Excellence (Lumina UI)', organization: 'Fast Company' },
+  { year: '2024', title: 'Developer Experience of the Year', organization: 'ViteConf Awards' },
+];
+---
+
+<BaseLayout
+  title="About Apex Agency — Studio Culture, Philosophy & Team"
+  description="Learn about Apex Agency's founding philosophy, our interdisciplinary leadership, core principles, and our global studios in San Francisco, London, and Tokyo."
+>
+  <div class="about-page">
+    <div class="container page-header">
+      <Breadcrumbs items={breadcrumbs} />
+      <span class="section-tag">Studio Culture & Manifesto</span>
+      <h1 class="page-title">We Exist to Elevate the Digital Benchmark.</h1>
+      <p class="page-subtitle">
+        Founded in 2022 by alumni of IDEO, Pentagram, and Cloudflare, Apex Agency is a boutique product and brand studio dedicated to building web experiences of enduring quality.
+      </p>
+    </div>
+
+    <!-- Agency Story Section -->
+    <section class="story-section">
+      <div class="container">
+        <div class="story-grid">
+          <div class="story-card card card-glass">
+            <h2 class="story-heading">The Apex Origin Story</h2>
+            <p class="story-p">
+              The modern web has become bloated, slow, and homogenized. Cookie-cutter templates and bloated multi-megabyte JavaScript bundles have degraded the digital experience for billions of people.
+            </p>
+            <p class="story-p">
+              We founded Apex Agency to prove an alternative: that software can be breathtakingly fast, visually unforgettable, and architecturally bulletproof.
+            </p>
+            <p class="story-p">
+              By combining timeless Swiss typographic traditions with bleeding-edge static site engineering in Astro, we craft digital flagships that set new industry standards.
+            </p>
+          </div>
+
+          <div class="pillars-grid">
+            {pillars.map((pillar) => (
+              <div class="pillar-card card card-glass">
+                <div class="pillar-icon-box">
+                  <Icon name={pillar.icon as any} size={22} />
+                </div>
+                <h3 class="pillar-title">{pillar.title}</h3>
+                <p class="pillar-desc">{pillar.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Global Agency Stats -->
+    <StatsSection />
+
+    <!-- Full Leadership Team Section with Bio Modals -->
+    <TeamSection />
+
+    <!-- Honors & Accolades -->
+    <section class="awards-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Industry Recognition</span>
+          <h2 class="section-title">Honors & Accolades.</h2>
+          <p class="section-subtitle">
+            Our work has been honored globally for technological innovation, accessibility, and design elegance.
+          </p>
+        </div>
+
+        <div class="awards-table card card-glass">
+          {awards.map((award) => (
+            <div class="award-row">
+              <span class="award-year">{award.year}</span>
+              <span class="award-name">{award.title}</span>
+              <span class="award-org badge badge-brand">{award.organization}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Global Studios Grid -->
+    <section class="studios-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Global Presence</span>
+          <h2 class="section-title">Three studios. One unified standard.</h2>
+        </div>
+
+        <div class="grid grid-3 studios-grid">
+          {siteConfig.offices.map((office) => (
+            <div class="card studio-card card-glass">
+              <div class="studio-top">
+                <Icon name="map-pin" size={20} class="studio-pin" />
+                <span class="badge badge-brand">{office.timezone}</span>
+              </div>
+              <h3 class="studio-city">{office.city}</h3>
+              <p class="studio-addr">{office.address}</p>
+              <div class="studio-contact">
+                <span class="contact-lbl">General Inquiries:</span>
+                <a href={`mailto:${siteConfig.contactEmail}`} class="contact-link">{siteConfig.contactEmail}</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-top: 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    max-width: 820px;
+    margin: 0 auto 3.5rem auto;
+  }
+
+  .page-title {
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .page-subtitle {
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* Story Grid */
+  .story-section {
+    padding-bottom: 6rem;
+  }
+
+  .story-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 960px) {
+    .story-grid {
+      grid-template-columns: 1.1fr 1.3fr;
+    }
+  }
+
+  .story-card {
+    padding: 3rem 2.5rem;
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .story-heading {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+
+  .story-p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* Pillars Grid */
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 580px) {
+    .pillars-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .pillar-card {
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .pillar-icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    color: var(--brand-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .pillar-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .pillar-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Awards Section */
+  .awards-section {
+    padding: 6rem 0;
+  }
+
+  .awards-table {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    border-radius: var(--radius-xl);
+  }
+
+  .award-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  @media (min-width: 600px) {
+    .award-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .award-row:last-child {
+    border-bottom: none;
+  }
+
+  .award-year {
+    font-family: var(--font-mono);
+    font-weight: 800;
+    color: var(--brand-primary);
+    min-width: 70px;
+  }
+
+  .award-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  /* Studios Section */
+  .studios-section {
+    padding: 4rem 0 6.5rem 0;
+  }
+
+  .studios-grid {
+    gap: 2rem;
+  }
+
+  .studio-card {
+    padding: 2.25rem 2rem;
+    border-radius: var(--radius-xl);
+  }
+
+  .studio-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+  }
+
+  .studio-pin {
+    color: var(--brand-primary);
+  }
+
+  .studio-city {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.45rem;
+  }
+
+  .studio-addr {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+
+  .studio-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .contact-lbl {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--text-subtle);
+  }
+
+  .contact-link {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--brand-primary);
+  }
+
+  .contact-link:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,0 +1,20 @@
+{
+  "name": "theme-apex-agency",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Apex Agency — Premium Creative & Digital Agency Website Theme for Astro",
+  "author": "Thempok Core",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.4.4"
+  }
+}

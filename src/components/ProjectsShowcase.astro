@@ -1,0 +1,158 @@
+---
+import { projects, projectCategories } from '../data/projects';
+import { getRelativePath } from '../data/site';
+import ProjectCard from './ProjectCard.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  showAll?: boolean;
+}
+
+const { showAll = false } = Astro.props;
+const displayProjects = showAll ? projects : projects.slice(0, 4);
+---
+
+<section class="projects-section" id="featured-work">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Selected Portfolio</span>
+      <h2 class="section-title">Case studies backed by undeniable metrics.</h2>
+      <p class="section-subtitle">
+        Explore how our interdisciplinary engineering and creative direction accelerate valuation, conversion, and global market stature.
+      </p>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="project-filters-wrap" role="tablist" aria-label="Filter case studies by category">
+      {projectCategories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`filter-tab ${idx === 0 ? 'active' : ''}`}
+          data-filter={cat}
+          role="tab"
+          aria-selected={idx === 0 ? 'true' : 'false'}
+        >
+          <span>{cat}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Filter Counter -->
+    <div class="filter-status-row">
+      <span class="filter-count-label">Showing <span id="active-project-count">{displayProjects.length}</span> projects</span>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-2 projects-grid" id="projects-grid-container">
+      {displayProjects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </div>
+
+    <!-- Bottom Actions -->
+    {!showAll && (
+      <div class="projects-bottom-cta">
+        <a href={getRelativePath('/projects/')} class="btn btn-secondary btn-lg">
+          <span>View All 6 Case Studies</span>
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+    )}
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const projectCards = document.querySelectorAll('[data-project-item]');
+    const countEl = document.getElementById('active-project-count');
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const category = tab.getAttribute('data-filter');
+        filterTabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        let visibleCount = 0;
+        projectCards.forEach((card) => {
+          const cardCat = card.getAttribute('data-category');
+          if (category === 'All' || cardCat === category) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (countEl) countEl.textContent = String(visibleCount);
+      });
+    });
+  })();
+</script>
+
+<style>
+  .projects-section {
+    padding: 6.5rem 0;
+    position: relative;
+  }
+
+  /* Filter Tabs */
+  .project-filters-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-tab {
+    padding: 0.55rem 1.25rem;
+    border-radius: var(--radius-full);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    transition: all var(--transition-fast);
+  }
+
+  .filter-tab:hover {
+    color: var(--text-primary);
+    border-color: var(--border-hover);
+  }
+
+  .filter-tab.active {
+    background: var(--brand-primary);
+    color: #ffffff;
+    border-color: var(--brand-primary);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+  }
+
+  .filter-status-row {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-subtle);
+  }
+
+  .filter-count-label strong,
+  .filter-count-label span {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .projects-grid {
+    gap: 2.25rem;
+  }
+
+  .projects-bottom-cta {
+    margin-top: 4rem;
+    text-align: center;
+  }
+</style>

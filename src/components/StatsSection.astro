@@ -1,0 +1,75 @@
+---
+import { stats } from '../data/stats';
+---
+
+<section class="stats-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Measurable Trajectory</span>
+      <h2 class="section-title">Engineered for quantifiable market dominance.</h2>
+      <p class="section-subtitle">
+        We don’t measure agency success by hours billed. We measure it by enterprise value created, retention rates sustained, and velocity achieved.
+      </p>
+    </div>
+
+    <div class="grid grid-4 stats-grid">
+      {stats.map((stat) => (
+        <div class="card stat-card card-glass">
+          {stat.badge && <span class="badge badge-brand stat-badge">{stat.badge}</span>}
+          <div class="stat-value gradient-text">{stat.value}</div>
+          <h3 class="stat-label">{stat.label}</h3>
+          <p class="stat-desc">{stat.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    padding: 6rem 0;
+    position: relative;
+  }
+
+  .stats-grid {
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.25rem 1.75rem;
+    position: relative;
+    border-radius: var(--radius-xl);
+  }
+
+  .stat-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: clamp(2.4rem, 4.5vw, 3.2rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.85rem;
+  }
+
+  .stat-label {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.65rem;
+  }
+
+  .stat-desc {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-top: auto;
+  }
+</style>
